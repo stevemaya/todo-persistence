@@ -28,7 +28,7 @@ Your options are:
 const displayTodos = function() {
   console.log('\nHere are your current todos:\n')
   for (let i = 0; i < todos.length; i++) {
-    console.log(i + 1 + '. ' + todos[i].text + ' ' + (todo[i].isComplete ? '✅' : '✖'));
+    console.log(i + 1 + '. ' + todos[i].text + ' ' + (todos[i].isComplete ? '✅' : '✖'));
   }
 }
 
