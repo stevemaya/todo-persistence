@@ -12,14 +12,12 @@ const interface = readline.createInterface({
 const displayMenu = function() {
   const menu = `
 Your options are:
-
 1. Add a todo.
 2. Remove a todo.
 3. Remove all completed todos.
 4. Toggle a todo's completion status.
 5. Toggle a todo's priority.
 6. Quit.
-
 `
 
   interface.question(menu, handleMenu);
@@ -40,12 +38,14 @@ const add = function(answer) {
   }
 
   todos.unshift(todo);
+  saveTodos();
   displayTodos();
   displayMenu();
 }
 
 const remove = function(num) {
   todos.splice(num - 1, 1);
+  saveTodos();
   displayTodos();
   displayMenu();
 }
@@ -120,5 +120,23 @@ const handleMenu = function(cmd) {
   }
 }
 
-displayTodos();
-displayMenu();
+fs.readFile(PATH_TO_TODOS_FILE, (err, data) => {
+  if (err) {
+    throw err;
+  }
+  const obj = JSON.parse(data);
+  todos = obj.todos
+  displayTodos();
+  displayMenu();
+})
+
+const saveTodos = () => {
+  const obj = {todos: todos};
+  const data = JSON.stringify(obj, null, 2);
+  fs.writeFile(PATH_TO_TODOS_FILE, data, 'utf8', (err) => {
+    if (err) {
+      throw err;
+    }
+  console.log("Your todo list is updated\n")
+  })
+}
